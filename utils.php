@@ -20,3 +20,13 @@ function argmax(array $output) {
 function amax(array $output) {
     return max($output);
 }
+
+// Read an int from a file handler and unpack it
+function freadint($f) {
+    return unpack("N", fread($f, 4))[1];
+}
+
+// Read a char from a file handler and unpack it
+function freadchar($f) {
+    return unpack("C", fread($f, 1))[1];
+}

@@ -36,4 +36,3 @@ if ($nn) {
 
     fann_destroy($nn);
 }
-?>

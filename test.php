@@ -22,37 +22,46 @@ if ($nn) {
 
     $features = [];
     $labels = [];
+    $errors = 0;
+    $correct = 0;
 
     // Open the val file for inference
     if ($file = fopen($valFile, "r")) {
         while(!feof($file)) {
             $line = explode(' ', fgets($file));
             array_pop($line); // remove the last array value(line break)
-
             $lineSize = count($line);
-            
+
             // If the line is an input...
             if ($lineSize == fann_get_num_input($nn)) {
                 $features = $line;
             } else if ($lineSize == fann_get_num_output($nn)) { // ...if is an output
                 $labels = $line;
-
                 $output = fann_run($nn, $features);
-
                 $pred = argmax($output);
                 $true_pred = argmax($labels);
                 $confidence = amax($output);
 
                 println('I think this number is '. $pred.' with '.round($confidence*100, 2).'% confidence');
                 println('REAL VALUE: '. $true_pred);
-                println('');
 
-                sleep(1);
+                if ($true_pred != $pred) {
+                    $errors+=1;
+                } else {
+                    $correct += 1;
+                }
+                println('');
             }
         }
         fclose($file);
     }
 
     fann_destroy($nn);
+
+    $total = $errors+$correct;
+
+    println('Total samples: '.$total);
+    println('Errors: '.$errors);
+    println('Correct: '.$correct);
+    println('Accuracy: '.($correct / $total));
 }
-?>

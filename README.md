@@ -25,10 +25,9 @@ for n in $NAMES; do
 done
 ```
 
-Next generate the train and test files for FANN
+Next generate the train/test and validation files for FANN
 ```bash
-./idxToCsv.py -i data/train-images-idx3-ubyte -l data/train-labels-idx1-ubyte -o train.fann -f FANN
-./idxToCsv.py -i data/t10k-images-idx3-ubyte -l data/t10k-labels-idx1-ubyte -o test.fann -f FANN_SPLIT
+php preprocess.php
 ```
 
 ### Train
