@@ -28,8 +28,8 @@ if ($nn) {
     // Open the val file for inference
     if ($file = fopen($valFile, "r")) {
         while(!feof($file)) {
-            $line = explode(' ', fgets($file));
-            array_pop($line); // remove the last array value(line break)
+            $line = trim(fgets($file));
+            $line = explode(' ', $line);
             $lineSize = count($line);
 
             // If the line is an input...

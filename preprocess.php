@@ -29,7 +29,6 @@ function convert_mnist_to_fann($imgfile, $labelf, $outf) {
         $idLabel = freadchar($l);
         // create an one hot encode placeholder
         $labels = array_fill(0, 10, 0.1);
-        $labels[] = PHP_EOL;
         // set the correct label with a higher value
         $labels[$idLabel] = 0.9;
 
@@ -40,6 +39,7 @@ function convert_mnist_to_fann($imgfile, $labelf, $outf) {
         fwrite($o, PHP_EOL);
         // writing the label
         fwrite($o, implode(' ', $labels));
+        fwrite($o, PHP_EOL);
     }
 
     // close the file handlers
@@ -76,11 +76,11 @@ function split_test_into_val_and_test($testFannF, $valf, $howManySamplesValidati
     rename('tmp_test.fann', $testFannF);
 }
 
-println('Converting mninst bynary train data to fann format...');
+println('Converting mninst binary train data to fann format...');
 convert_mnist_to_fann('data/train-images-idx3-ubyte', 'data/train-labels-idx1-ubyte', 'train.fann');
 println('Done!');
 
-println('Converting mninst bynary test data to fann format...');
+println('Converting mninst binary test data to fann format...');
 convert_mnist_to_fann('data/t10k-images-idx3-ubyte', 'data/t10k-labels-idx1-ubyte', 'test.fann');
 println('Done!');
 
