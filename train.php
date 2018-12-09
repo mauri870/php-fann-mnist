@@ -16,23 +16,23 @@ if (!file_exists('checkpoints'))
 
 $nn = fann_create_standard($num_layers, $num_input, $num_neurons_hidden, $num_output);
 
-if ($nn) {
-    println('Training on MNIST... '); 
-    fann_set_activation_function_hidden($nn, FANN_SIGMOID);
-    fann_set_activation_function_output($nn, FANN_SIGMOID);
+if (!$nn) quit("Error to get NN instance");
 
-    $testData = fann_read_train_from_file(dirname(__FILE__).'/test.fann');
+println('Training on MNIST... '); 
+fann_set_activation_function_hidden($nn, FANN_SIGMOID);
+fann_set_activation_function_output($nn, FANN_SIGMOID);
 
-    fann_set_callback($nn, function ($nn, $train, $max_epochs, $epochs_between_reports, $desired_error, $epoch) use ($testData) {
-        println('Epoch: '.$epoch);
+$testData = fann_read_train_from_file(dirname(__FILE__).'/test.fann');
 
-        println('Loss: '.fann_test_data($nn, $testData));
-        return true;
-    });
+fann_set_callback($nn, function ($nn, $train, $max_epochs, $epochs_between_reports, $desired_error, $epoch) use ($testData) {
+    println('Epoch: '.$epoch);
 
-    $filename = dirname(__FILE__) ."/train.fann";
-    if (fann_train_on_file($nn, $filename, $max_epochs, $epochs_between_reports, $learning_rate))
-        fann_save($nn, dirname(__FILE__) . "/checkpoints/mnist.net");
+    println('Loss: '.fann_test_data($nn, $testData));
+    return true;
+});
 
-    fann_destroy($nn);
-}
+$filename = dirname(__FILE__) ."/train.fann";
+if (fann_train_on_file($nn, $filename, $max_epochs, $epochs_between_reports, $learning_rate))
+    fann_save($nn, dirname(__FILE__) . "/checkpoints/mnist.net");
+
+fann_destroy($nn);
